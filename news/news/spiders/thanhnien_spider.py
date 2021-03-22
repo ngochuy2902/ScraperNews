@@ -41,8 +41,8 @@ class ThanhNienSpider(BaseSpider):
             'title': response.css('h1.details__headline::text').get().strip(),
             'category_url': response.meta['category_url'],
             'category': response.meta['category'],
-            'time': self.parse_datetime(response.css('time::text').get()),
-            'content': content
+            'time': self.parse_datetime(response.css('t::text').get()),
+            'content': content.strip()
         }
         yield article
 
