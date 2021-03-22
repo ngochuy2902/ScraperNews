@@ -17,4 +17,4 @@ def run_spider(spider_name: str, **kwargs):
 
 
 if __name__ == "__main__":
-    run_spider(spider_name="tuoitre")
+    run_spider(spider_name="thanhnien")
