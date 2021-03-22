@@ -44,7 +44,7 @@ class MongoDB:
 
     def process_item(self, item: dict, spider: Spider):
         self.items.append(item)
-        spider.logger.info("ab")
         if len(self.items) >= self.chunk:
+            spider.logger.info("Inserting MongoDB...")
             self.db[self.collection_name].insert_many(self.items)
             self.items = []

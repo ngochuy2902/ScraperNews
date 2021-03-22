@@ -3,9 +3,10 @@ import uuid
 import datetime
 import scrapy
 from scrapy.http.response import Response
+from .base import BaseSpider
 
 
-class NhanDanSpider(scrapy.Spider):
+class NhanDanSpider(BaseSpider):
     name = 'nhandan'
 
     def start_requests(self):

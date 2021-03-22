@@ -3,9 +3,10 @@ import uuid
 import datetime
 import scrapy
 from scrapy.http.response import Response
+from .base import BaseSpider
 
 
-class VietnamnetSpider(scrapy.Spider):
+class VietnamnetSpider(BaseSpider):
     name = 'vietnamnet'
 
     def start_requests(self):

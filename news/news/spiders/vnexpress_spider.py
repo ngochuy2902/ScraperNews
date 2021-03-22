@@ -3,9 +3,10 @@ import uuid
 import datetime
 import scrapy
 from scrapy.http.response import Response
+from .base import BaseSpider
 
 
-class VnexpressSpider(scrapy.Spider):
+class VnexpressSpider(BaseSpider):
     name = 'vnexpress'
 
     def start_requests(self):

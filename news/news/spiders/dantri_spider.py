@@ -3,9 +3,10 @@ import uuid
 import datetime
 import scrapy
 from scrapy.http.response import Response
+from .base import BaseSpider
 
 
-class DanTriSpider(scrapy.Spider):
+class DanTriSpider(BaseSpider):
     name = 'dantri'
 
     def start_requests(self):
@@ -24,7 +25,7 @@ class DanTriSpider(scrapy.Spider):
                                                                                       "category": urls_dict[url]})
 
     def parse_article_url_list(self, response):
-        urls = response.css('html').re(r'\/\w*-.*\/.*\d.htm')
+        urls = response.css('html').re(r'\/\w*-.*\/.*\d{17}.htm')
         urls = list(set(urls))
         for url in urls:
             yield scrapy.Request(url="https://dantri.com.vn" + url, callback=self.parse_content_article, meta=response.meta)
