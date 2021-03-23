@@ -1,8 +1,8 @@
-import re
 import uuid
-import datetime
+
 import scrapy
 from scrapy.http.response import Response
+
 from .base import BaseSpider, parse_datetime
 
 
@@ -27,7 +27,8 @@ class NhanDanSpider(BaseSpider):
         urls = response.css('.boxlist-list').re(r'(\/[^"]*-\d{6}\/)')
         urls = list(set(urls))
         for url in urls:
-            yield scrapy.Request(url="https://nhandan.com.vn" + url, callback=self.parse_content_article, meta=response.meta)
+            yield scrapy.Request(url="https://nhandan.com.vn" + url, callback=self.parse_content_article,
+                                 meta=response.meta)
 
     def parse_content_article(self, response: Response):
         title = response.css('h1::text').get()
@@ -46,4 +47,3 @@ class NhanDanSpider(BaseSpider):
                 'content': content.strip()
             }
             yield article
-

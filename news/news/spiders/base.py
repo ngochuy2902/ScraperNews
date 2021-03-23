@@ -1,7 +1,7 @@
-import scrapy
-from scrapy import Spider
-import re
 import datetime
+import re
+
+from scrapy import Spider
 
 
 def parse_datetime(datetime_str):
@@ -36,4 +36,3 @@ class BaseSpider(Spider):
 
     def parse(self, response, **kwargs):
         raise NotImplementedError
-

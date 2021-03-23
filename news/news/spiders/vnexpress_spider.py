@@ -1,8 +1,8 @@
-import re
 import uuid
-import datetime
+
 import scrapy
 from scrapy.http.response import Response
+
 from .base import BaseSpider, parse_datetime
 
 
@@ -46,4 +46,3 @@ class VnexpressSpider(BaseSpider):
                 'content': content.strip()
             }
             yield article
-

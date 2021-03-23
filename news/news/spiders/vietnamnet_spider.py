@@ -1,8 +1,8 @@
-import re
 import uuid
-import datetime
+
 import scrapy
 from scrapy.http.response import Response
+
 from .base import BaseSpider, parse_datetime
 
 
@@ -24,10 +24,12 @@ class VietnamnetSpider(BaseSpider):
                                                                                       "category": urls_dict[url]})
 
     def parse_article_url_list(self, response):
-        urls = response.css('.Top-Cate').re(r'\/vn\/[^"]*?\d{6}.html') + response.css('.list-content').re(r'\/vn\/[^"]*?\d+.html')
+        urls = response.css('.Top-Cate').re(r'\/vn\/[^"]*?\d{6}.html') + response.css('.list-content').re(
+            r'\/vn\/[^"]*?\d+.html')
         urls = list(set(urls))
         for url in urls:
-            yield scrapy.Request(url="https://vietnamnet.vn" + url, callback=self.parse_content_article, meta=response.meta)
+            yield scrapy.Request(url="https://vietnamnet.vn" + url, callback=self.parse_content_article,
+                                 meta=response.meta)
 
     def parse_content_article(self, response: Response):
         title = response.css('h1::text').get()
@@ -46,4 +48,3 @@ class VietnamnetSpider(BaseSpider):
                 'content': content.strip()
             }
             yield article
-

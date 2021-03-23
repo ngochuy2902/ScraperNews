@@ -28,7 +28,8 @@ class DanTriSpider(BaseSpider):
         urls = response.css('html').re(r'\/\w*-.*\/.*\d{17}.htm')
         urls = list(set(urls))
         for url in urls:
-            yield scrapy.Request(url="https://dantri.com.vn" + url, callback=self.parse_content_article, meta=response.meta)
+            yield scrapy.Request(url="https://dantri.com.vn" + url, callback=self.parse_content_article,
+                                 meta=response.meta)
 
     def parse_content_article(self, response: Response):
         title = response.css('h1.dt-news__title::text').get()
@@ -47,7 +48,3 @@ class DanTriSpider(BaseSpider):
                 'content': content.strip()
             }
             yield article
-
-
-
-

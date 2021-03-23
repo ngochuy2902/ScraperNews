@@ -1,10 +1,10 @@
-import re
 import uuid
-import datetime
+
 import scrapy
 from scrapy.http.response import Response
-from .base import BaseSpider, parse_datetime
 from w3lib.html import remove_tags, remove_tags_with_content
+
+from .base import BaseSpider, parse_datetime
 
 
 class ThanhNienSpider(BaseSpider):
@@ -29,7 +29,8 @@ class ThanhNienSpider(BaseSpider):
         urls = response.css('.feature').re(r'\/.*\/.*\d{7}.html') + response.css('.relative').re(r'\/.*\/.*\d+.html')
         urls = list(set(urls))
         for url in urls:
-            yield scrapy.Request(url="https://thanhnien.vn" + url, callback=self.parse_content_article, meta=response.meta)
+            yield scrapy.Request(url="https://thanhnien.vn" + url, callback=self.parse_content_article,
+                                 meta=response.meta)
 
     def parse_content_article(self, response: Response):
         title = response.css('h1.details__headline::text').get()
@@ -51,4 +52,3 @@ class ThanhNienSpider(BaseSpider):
                 'content': content.strip()
             }
             yield article
-
