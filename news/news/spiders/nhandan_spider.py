@@ -32,10 +32,10 @@ class NhanDanSpider(BaseSpider):
 
     def parse_content_article(self, response: Response):
         title = response.css('h1::text').get()
-        if title is None:
+        content = " ".join(response.css('.box-content-detail p::text').getall())
+        if title is None or content is None:
             yield {}
         else:
-            content = " ".join(response.css('.box-content-detail p::text').getall())
             article = {
                 'uuid_url': str(uuid.uuid5(uuid.NAMESPACE_DNS, response.url)),
                 'url': response.url,
@@ -43,7 +43,7 @@ class NhanDanSpider(BaseSpider):
                 'title': title.strip(),
                 'category_url': response.meta['category_url'],
                 'category': response.meta['category'],
-                'time': parse_datetime(response.css('.box-date::text').get()),
+                'time': parse_datetime(response.css('div.box-date::text').get()),
                 'content': content.strip()
             }
             yield article

@@ -30,9 +30,9 @@ class VnexpressSpider(BaseSpider):
             yield scrapy.Request(url=url, callback=self.parse_content_article, meta=response.meta)
 
     def parse_content_article(self, response: Response):
-        content = " ".join(response.css('p::text').getall())
         title = response.css('h1.title-detail::text')
-        if title is None:
+        content = " ".join(response.css('p::text').getall())
+        if title is None or content is None:
             yield {}
         else:
             article = {

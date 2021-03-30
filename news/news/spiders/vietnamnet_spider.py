@@ -25,7 +25,7 @@ class VietnamnetSpider(BaseSpider):
 
     def parse_article_url_list(self, response):
         urls = response.css('.Top-Cate').re(r'\/vn\/[^"]*?\d{6}.html') + response.css('.list-content').re(
-            r'\/vn\/[^"]*?\d+.html')
+            r'\/vn\/[^"]*?\d{6}.html')
         urls = list(set(urls))
         for url in urls:
             yield scrapy.Request(url="https://vietnamnet.vn" + url, callback=self.parse_content_article,
@@ -33,10 +33,10 @@ class VietnamnetSpider(BaseSpider):
 
     def parse_content_article(self, response: Response):
         title = response.css('h1::text').get()
-        if title is None:
+        content = " ".join(response.css('div.ArticleDetail p::text').getall())
+        if title is None or content is None:
             yield {}
         else:
-            content = " ".join(response.css('div.ArticleDetail p::text').getall())
             article = {
                 'uuid_url': str(uuid.uuid5(uuid.NAMESPACE_DNS, response.url)),
                 'url': response.url,

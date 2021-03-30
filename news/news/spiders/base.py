@@ -6,7 +6,7 @@ from scrapy import Spider
 
 def parse_datetime(datetime_str):
     try:
-        date_pattern = re.compile(r"\d{1,2}\/\d{1,2}\/\d{4}")
+        date_pattern = re.compile(r"\d{1,2}[\/|-]\d{1,2}[\/|-]\d{4}")
         time_pattern = re.compile(r"\d{1,2}:\d{1,2}")
 
         date_str = re.findall(date_pattern, datetime_str)
@@ -24,6 +24,7 @@ def parse_datetime(datetime_str):
         return datetime.datetime.now()
 
     datetime_str = date_str + " " + time_str
+    datetime_str = datetime_str.replace('-', '/')
     return datetime.datetime.strptime(datetime_str, '%d/%m/%Y %H:%M')
 
 

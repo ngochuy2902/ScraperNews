@@ -33,10 +33,10 @@ class DanTriSpider(BaseSpider):
 
     def parse_content_article(self, response: Response):
         title = response.css('h1.dt-news__title::text').get()
-        if title is None:
+        content = " ".join(response.css('div.dt-news__content *::text').getall())
+        if title is None or content is None:
             yield {}
         else:
-            content = " ".join(response.css('div.dt-news__content p::text').getall())
             article = {
                 'uuid_url': str(uuid.uuid5(uuid.NAMESPACE_DNS, response.url)),
                 'url': response.url,

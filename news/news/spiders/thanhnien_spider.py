@@ -26,7 +26,7 @@ class ThanhNienSpider(BaseSpider):
                                                                                       "category": urls_dict[url]})
 
     def parse_article_url_list(self, response):
-        urls = response.css('.feature').re(r'\/.*\/.*\d{7}.html') + response.css('.relative').re(r'\/.*\/.*\d+.html')
+        urls = response.css('.feature').re(r'\/.*\/.*\d{7}.html') + response.css('.relative').re(r'\/.*\/.*\d{7}.html')
         urls = list(set(urls))
         for url in urls:
             yield scrapy.Request(url="https://thanhnien.vn" + url, callback=self.parse_content_article,
@@ -34,13 +34,13 @@ class ThanhNienSpider(BaseSpider):
 
     def parse_content_article(self, response: Response):
         title = response.css('h1.details__headline::text').get()
+        raw_content = response.xpath('//div[@id="abody"]').extract()[0]
+        content = remove_tags(remove_tags_with_content(raw_content, ('script', 'table')))
         if title is None:
             title = response.css('h2.details__headline::text').get()
-        if title is None:
+        if title is None or content is None:
             yield {}
         else:
-            raw_content = response.xpath('//div[@id="abody"]').extract()[0]
-            content = remove_tags(remove_tags_with_content(raw_content, ('script',)))
             article = {
                 'uuid_url': str(uuid.uuid5(uuid.NAMESPACE_DNS, response.url)),
                 'url': response.url,
