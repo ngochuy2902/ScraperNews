@@ -33,5 +33,5 @@ def run_all_spider():
 
 
 if __name__ == "__main__":
-    # run_spider(spider_name="vietnamnet")
+    # run_spider(spider_name="vnexpress")
     run_all_spider()

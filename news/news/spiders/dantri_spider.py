@@ -1,13 +1,16 @@
 import uuid
+from abc import ABC
 
 import scrapy
 from scrapy.http.response import Response
 
 from .base import BaseSpider, parse_datetime
+from ..data.mongo import MongoDB
 
 
 class DanTriSpider(BaseSpider):
     name = 'dantri'
+    mongo = MongoDB()
 
     def start_requests(self):
         urls_dict = {
@@ -25,21 +28,25 @@ class DanTriSpider(BaseSpider):
                                                                                       "category": urls_dict[url]})
 
     def parse_article_url_list(self, response):
-        urls = response.css('html').re(r'\/\w*-.*\/.*\d{17}.htm')
+        urls = response.css('html').re(r'\/[^".]*\/[^".]*\d{17}.htm')
         urls = list(set(urls))
         for url in urls:
-            yield scrapy.Request(url="https://dantri.com.vn" + url, callback=self.parse_content_article,
-                                 meta=response.meta)
+            if self.mongo.get_articles_by_url(url) is None:
+                url = "https://dantri.com.vn" + url
+                meta = response.meta
+                meta['url'] = url
+                yield scrapy.Request(url=url, callback=self.parse_content_article,
+                                     meta=meta)
 
     def parse_content_article(self, response: Response):
         title = response.css('h1.dt-news__title::text').get()
         content = " ".join(response.css('div.dt-news__content *::text').getall())
-        if title is None or content is None:
+        if not bool(title) or not bool(content):
             yield {}
         else:
             article = {
                 'uuid_url': str(uuid.uuid5(uuid.NAMESPACE_DNS, response.url)),
-                'url': response.url,
+                'url': response.meta['url'],
                 'domain': self.name,
                 'title': title.strip(),
                 'category_url': response.meta['category_url'],

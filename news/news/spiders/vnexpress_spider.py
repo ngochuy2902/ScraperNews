@@ -4,10 +4,12 @@ import scrapy
 from scrapy.http.response import Response
 
 from .base import BaseSpider, parse_datetime
+from ..data.mongo import MongoDB
 
 
 class VnexpressSpider(BaseSpider):
     name = 'vnexpress'
+    mongo = MongoDB()
 
     def start_requests(self):
         urls_dict = {
@@ -26,18 +28,22 @@ class VnexpressSpider(BaseSpider):
     def parse_article_url_list(self, response):
         urls = response.css('html').re(r'https:\/\/vnexpress.*.html')
         urls = list(set(urls))
+
         for url in urls:
-            yield scrapy.Request(url=url, callback=self.parse_content_article, meta=response.meta)
+            if self.mongo.get_articles_by_url(url) is None:
+                meta = response.meta
+                meta['url'] = url
+                yield scrapy.Request(url=url, callback=self.parse_content_article, meta=meta)
 
     def parse_content_article(self, response: Response):
         title = response.css('h1.title-detail::text')
         content = " ".join(response.css('p::text').getall())
-        if title is None or content is None:
+        if not bool(title) or not bool(content):
             yield {}
         else:
             article = {
                 'uuid_url': str(uuid.uuid5(uuid.NAMESPACE_DNS, response.url)),
-                'url': response.url,
+                'url': response.meta['url'],
                 'domain': self.name,
                 'title': title.get(),
                 'category_url': response.meta['category_url'],

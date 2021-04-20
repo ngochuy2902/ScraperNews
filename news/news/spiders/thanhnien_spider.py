@@ -5,10 +5,12 @@ from scrapy.http.response import Response
 from w3lib.html import remove_tags, remove_tags_with_content
 
 from .base import BaseSpider, parse_datetime
+from ..data.mongo import MongoDB
 
 
 class ThanhNienSpider(BaseSpider):
     name = 'thanhnien'
+    mongo = MongoDB()
 
     def start_requests(self):
         urls_dict = {
@@ -26,11 +28,16 @@ class ThanhNienSpider(BaseSpider):
                                                                                       "category": urls_dict[url]})
 
     def parse_article_url_list(self, response):
-        urls = response.css('.feature').re(r'\/.*\/.*\d{7}.html') + response.css('.relative').re(r'\/.*\/.*\d{7}.html')
+        urls = response.css('.feature').re(r'\/[^".]*\/[^".]*\d{7}.html') + response.css('.relative').re(
+            r'\/[^".]*\/[^".]*\d{7}.html')
         urls = list(set(urls))
         for url in urls:
-            yield scrapy.Request(url="https://thanhnien.vn" + url, callback=self.parse_content_article,
-                                 meta=response.meta)
+            if self.mongo.get_articles_by_url(url) is None:
+                url = "https://thanhnien.vn" + url
+                meta = response.meta
+                meta['url'] = url
+                yield scrapy.Request(url=url, callback=self.parse_content_article,
+                                     meta=meta)
 
     def parse_content_article(self, response: Response):
         title = response.css('h1.details__headline::text').get()
@@ -38,12 +45,12 @@ class ThanhNienSpider(BaseSpider):
         content = remove_tags(remove_tags_with_content(raw_content, ('script', 'table')))
         if title is None:
             title = response.css('h2.details__headline::text').get()
-        if title is None or content is None:
+        if not bool(title) or not bool(content):
             yield {}
         else:
             article = {
                 'uuid_url': str(uuid.uuid5(uuid.NAMESPACE_DNS, response.url)),
-                'url': response.url,
+                'url': response.meta['url'],
                 'domain': self.name,
                 'title': title.strip(),
                 'category_url': response.meta['category_url'],
