@@ -41,9 +41,11 @@ class ThanhNienSpider(BaseSpider):
 
     def parse_content_article(self, response: Response):
         title = response.css('h1.details__headline::text').get()
-        raw_content = response.xpath('//div[@id="abody"]').extract()[0]
-        content = remove_tags(remove_tags_with_content(raw_content, ('script', 'table')))
-        if title is None:
+        content = None
+        if bool(response.xpath('//div[@id="abody"]').extract()):
+            raw_content = response.xpath('//div[@id="abody"]').extract()[0]
+            content = remove_tags(remove_tags_with_content(raw_content, ('script', 'table')))
+        if not bool(title):
             title = response.css('h2.details__headline::text').get()
         if not bool(title) or not bool(content):
             yield {}

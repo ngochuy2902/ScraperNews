@@ -43,7 +43,8 @@ class MongoDB:
         self.client.close()
 
     def process_item(self, item: dict, spider: Spider):
-        if item is not None:
+        if bool(item):
+            print(item)
             self.items.append(item)
         if len(self.items) >= self.chunk:
             spider.logger.info("Inserting MongoDB...")
