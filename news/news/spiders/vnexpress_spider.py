@@ -15,7 +15,9 @@ class VnexpressSpider(BaseSpider):
         urls_dict = {
             "https://vnexpress.net/thoi-su/chinh-tri": "chinh-tri",
             "https://vnexpress.net/doi-song": "xa-hoi",
-            "https://vnexpress.net/giao-duc": "giao-duc",
+            "https://vnexpress.net/giao-duc/tuyen-sinh": "giao-duc",
+            "https://vnexpress.net/giao-duc/du-hoc": "giao-duc",
+            "https://vnexpress.net/giao-duc/giao-duc-40": "giao-duc",
             "https://vnexpress.net/khoa-hoc/tin-tuc": "khoa-hoc",
             "https://vnexpress.net/suc-khoe/tin-tuc": "y-te",
             "https://vnexpress.net/the-thao": "the-thao",
@@ -26,7 +28,7 @@ class VnexpressSpider(BaseSpider):
                                                                                       "category": urls_dict[url]})
 
     def parse_article_url_list(self, response):
-        urls = response.css('html').re(r'https:\/\/vnexpress.*.html')
+        urls = response.css('html').re(r'https:\/\/vnexpress.*-\d{7}.html')
         urls = list(set(urls))
 
         for url in urls:
@@ -37,7 +39,9 @@ class VnexpressSpider(BaseSpider):
 
     def parse_content_article(self, response: Response):
         title = response.css('h1.title-detail::text')
-        content = " ".join(response.css('p::text').getall())
+        content = ""
+        for node in response.xpath('//p[@class="Normal"]'):
+            content = content + node.xpath('string()').extract()[0] + " "
         if not bool(title) or not bool(content):
             yield {}
         else:
@@ -49,6 +53,6 @@ class VnexpressSpider(BaseSpider):
                 'category_url': response.meta['category_url'],
                 'category': response.meta['category'],
                 'time': parse_datetime(response.css('.date::text').get()),
-                'content': content.strip()
+                'content': content.replace("Nguồn:", "").replace("(Theo  )", "").strip()
             }
             yield article
