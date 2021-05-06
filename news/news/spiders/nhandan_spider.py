@@ -3,7 +3,7 @@ import uuid
 import scrapy
 from scrapy.http.response import Response
 
-from .base import BaseSpider, parse_datetime
+from .base import BaseSpider, parse_datetime, check_valid_text
 from ..data.mongo import MongoDB
 
 
@@ -39,7 +39,7 @@ class NhanDanSpider(BaseSpider):
     def parse_content_article(self, response: Response):
         title = response.css('h1::text').get()
         content = " ".join(response.css('.box-content-detail p::text').getall())
-        if not bool(title) or not bool(content):
+        if check_valid_text(title) is False or check_valid_text(content) is False:
             yield {}
         else:
             article = {

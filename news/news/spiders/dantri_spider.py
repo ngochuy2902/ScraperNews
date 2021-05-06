@@ -4,7 +4,7 @@ from abc import ABC
 import scrapy
 from scrapy.http.response import Response
 
-from .base import BaseSpider, parse_datetime
+from .base import BaseSpider, parse_datetime, check_valid_text
 from ..data.mongo import MongoDB
 
 
@@ -41,7 +41,7 @@ class DanTriSpider(BaseSpider):
     def parse_content_article(self, response: Response):
         title = response.css('h1.dt-news__title::text').get()
         content = " ".join(response.css('div.dt-news__content *::text').getall())
-        if not bool(title) or not bool(content):
+        if check_valid_text(title) is False or check_valid_text(content) is False:
             yield {}
         else:
             article = {

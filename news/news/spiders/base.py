@@ -28,6 +28,12 @@ def parse_datetime(datetime_str):
     return datetime.datetime.strptime(datetime_str, '%d/%m/%Y %H:%M')
 
 
+def check_valid_text(content: str):
+    if re.findall(r"\w", content):
+        return True
+    return False
+
+
 class BaseSpider(Spider):
     name = 'base-spider'
     id_spider = None
