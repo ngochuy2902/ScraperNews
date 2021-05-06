@@ -28,8 +28,10 @@ def parse_datetime(datetime_str):
     return datetime.datetime.strptime(datetime_str, '%d/%m/%Y %H:%M')
 
 
-def check_valid_text(content: str):
-    if re.findall(r"\w", content):
+def check_valid_text(text):
+    if text is None:
+        return False
+    if re.findall(r"\w", text):
         return True
     return False
 
