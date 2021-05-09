@@ -1,7 +1,11 @@
+import datetime
+
 from scrapy.spiderloader import SpiderLoader
 from scrapy.crawler import CrawlerProcess
 from scrapy.utils.project import get_project_settings
-from news.news.spiders.base import BaseSpider
+from news.spiders.base import BaseSpider
+import requests
+from settings import HOST
 
 
 def run_spider(spider_name: str, **kwargs):
@@ -32,6 +36,8 @@ def run_all_spider():
     process.join()
 
 
+# def run():
 if __name__ == "__main__":
     # run_spider(spider_name="vnexpress")
     run_all_spider()
+    print('Crawl complete')

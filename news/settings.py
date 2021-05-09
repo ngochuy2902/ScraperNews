@@ -9,8 +9,8 @@
 
 BOT_NAME = 'news'
 
-SPIDER_MODULES = ['news.news.spiders']
-NEWSPIDER_MODULE = 'news.news.spiders'
+SPIDER_MODULES = ['news.spiders']
+NEWSPIDER_MODULE = 'news.spiders'
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 # USER_AGENT = 'news (+http://www.yourdomain.com)'
@@ -23,5 +23,10 @@ MONGO_DATABASE = 'scraper-news'
 MONGO_COLLECTION = 'articles'
 
 ITEM_PIPELINES = {
-    'news.news.pipelines.MongoDB': 300,
+    'news.pipelines.MongoDB': 300,
 }
+
+HOST = 'localhost'
+PORT = 5501
+
+RANKING_API_URL = 'http://localhost:5500/rank'

@@ -1,5 +1,5 @@
 from pymongo import MongoClient
-from news.news.settings import MONGO_URI, MONGO_DATABASE, MONGO_COLLECTION
+from news.settings import MONGO_URI, MONGO_DATABASE, MONGO_COLLECTION
 
 
 class MongoDB:
