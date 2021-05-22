@@ -19,6 +19,6 @@ class CrawlerService:
             print('Crawl complete')
             created_time = str(datetime.now().isoformat())
             data = {"created_time": created_time}
-            # requests.post(url=RANKING_API_URL, json=data)
+            requests.post(url=RANKING_API_URL, json=data)
         except(Exception,) as ex:
             print(f'Error run spider: {ex}')

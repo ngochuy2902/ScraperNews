@@ -1,10 +1,23 @@
 from fastapi import FastAPI, BackgroundTasks
+from starlette.middleware.cors import CORSMiddleware
 from starlette.responses import JSONResponse
 
 from news.service.crawler import CrawlerService
 
 crawler_app = FastAPI()
 crawler_service = CrawlerService()
+
+origins = [
+    "http://localhost:3000"
+]
+
+crawler_app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 @crawler_app.post('/crawler')
