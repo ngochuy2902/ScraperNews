@@ -51,7 +51,7 @@ class ThanhNienSpider(BaseSpider):
             yield {}
         else:
             article = {
-                'uuid_url': str(uuid.uuid5(uuid.NAMESPACE_DNS, response.url)),
+                'uuid': str(uuid.uuid5(uuid.NAMESPACE_DNS, response.url)),
                 'url': response.meta['url'],
                 'domain': self.name,
                 'title': title.strip(),

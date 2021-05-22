@@ -30,3 +30,5 @@ zope.interface==5.2.0
 fastapi~=0.64.0
 requests~=2.25.1
 uvicorn~=0.13.4
+starlette~=0.13.6
+pydantic~=1.8.1
