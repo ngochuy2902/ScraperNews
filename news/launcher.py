@@ -4,8 +4,6 @@ from scrapy.spiderloader import SpiderLoader
 from scrapy.crawler import CrawlerProcess
 from scrapy.utils.project import get_project_settings
 from news.spiders.base import BaseSpider
-import requests
-from settings import HOST
 
 
 def run_spider(spider_name: str, **kwargs):

@@ -29,4 +29,4 @@ ITEM_PIPELINES = {
 HOST = 'localhost'
 PORT = 5501
 
-RANKING_API_URL = 'http://localhost:5500/rank'
+UPDATE_NEWS_CRAWLER_STATUS_API_URL = 'http://localhost:8080/api/internal/crawler/news'
