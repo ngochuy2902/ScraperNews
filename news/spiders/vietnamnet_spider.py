@@ -15,6 +15,7 @@ class VietnamnetSpider(BaseSpider):
         urls_dict = {
             "https://vietnamnet.vn/vn/thoi-su/chinh-tri/": "chinh-tri",
             "https://vietnamnet.vn/vn/thoi-su/": "xa-hoi",
+            "https://vietnamnet.vn/vn/kinh-doanh/": "kinh-te",
             "https://vietnamnet.vn/vn/giao-duc/": "giao-duc",
             "https://vietnamnet.vn/vn/suc-khoe/": "y-te",
             "https://vietnamnet.vn/vn/cong-nghe/": "cong-nghe",

@@ -15,9 +15,8 @@ class VnexpressSpider(BaseSpider):
         urls_dict = {
             "https://vnexpress.net/thoi-su/chinh-tri": "chinh-tri",
             "https://vnexpress.net/doi-song": "xa-hoi",
-            "https://vnexpress.net/giao-duc/tuyen-sinh": "giao-duc",
-            "https://vnexpress.net/giao-duc/du-hoc": "giao-duc",
-            "https://vnexpress.net/giao-duc/giao-duc-40": "giao-duc",
+            "https://vnexpress.net/kinh-doanh": "kinh-te",
+            "https://vnexpress.net/giao-duc": "giao-duc",
             "https://vnexpress.net/khoa-hoc/tin-tuc": "khoa-hoc",
             "https://vnexpress.net/suc-khoe/tin-tuc": "y-te",
             "https://vnexpress.net/the-thao": "the-thao",

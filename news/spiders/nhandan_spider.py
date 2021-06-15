@@ -16,6 +16,7 @@ class NhanDanSpider(BaseSpider):
             "https://nhandan.com.vn/chinhtri": "chinh-tri",
             "https://nhandan.com.vn/xahoi": "xa-hoi",
             "https://nhandan.com.vn/vanhoa": "van-hoa",
+            "https://nhandan.com.vn/kinhte": "kinh-te",
             "https://nhandan.com.vn/giaoduc": "giao-duc",
             "https://nhandan.com.vn/khoahoc-congnghe": "khoa-hoc",
             "https://nhandan.com.vn/y-te": "y-te",

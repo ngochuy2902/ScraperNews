@@ -17,6 +17,7 @@ class ThanhNienSpider(BaseSpider):
             "https://thanhnien.vn/thoi-su/chinh-tri/": "chinh-tri",
             "https://thanhnien.vn/doi-song/": "xa-hoi",
             "https://thanhnien.vn/van-hoa/": "van-hoa",
+            "https://thanhnien.vn/tai-chinh-kinh-doanh/": "kinh-te",
             "https://thanhnien.vn/giao-duc/": "giao-duc",
             "https://thanhnien.vn/suc-khoe/": "y-te",
             "https://thanhnien.vn/cong-nghe/": "cong-nghe",
